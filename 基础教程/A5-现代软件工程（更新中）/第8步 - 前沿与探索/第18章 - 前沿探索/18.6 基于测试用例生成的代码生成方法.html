@@ -1,0 +1,3098 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="微软人工智能教育与学习共建社区(简称AI_Edu)是一个涵盖人工智能、深度学习等内容的开源知识社区，帮助用户在学与实践中掌握人工智能的知识。">
+      
+      
+      
+        <meta name="author" content="AI-Edu Team">
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-7.1.8">
+    
+    
+      
+        <title>18.6 基于测试用例生成的代码生成方法 - AI-EDU</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("../../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#186" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../index.html" title="AI-EDU" class="md-header__button md-logo" aria-label="AI-EDU" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI-EDU
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              18.6 基于测试用例生成的代码生成方法
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/microsoft/ai-edu" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Microsoft/ai-edu
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../../index.html" class="md-tabs__link">
+      Ai-edu
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../index.html" class="md-tabs__link">
+        基础教程
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/index.html" class="md-tabs__link">
+        实践案例
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../../News.html" class="md-tabs__link">
+      最新动态
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../about.html" class="md-tabs__link">
+        关于我们
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../index.html" title="AI-EDU" class="md-nav__button md-logo" aria-label="AI-EDU" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    AI-EDU
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/microsoft/ai-edu" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Microsoft/ai-edu
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../index.html" class="md-nav__link">
+        Ai-edu
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        基础教程
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="基础教程" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          基础教程
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../index.html" class="md-nav__link">
+        本页介绍
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" >
+      
+      <label class="md-nav__link" for="__nav_2_2">
+        神经网络基本原理
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="神经网络基本原理" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          神经网络基本原理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/index.html" class="md-nav__link">
+        本课介绍
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_2" type="checkbox" id="__nav_2_2_2" >
+      
+      <label class="md-nav__link" for="__nav_2_2_2">
+        第一步、基本知识
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="第一步、基本知识" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          第一步、基本知识
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/00%20%E5%89%8D%E8%A8%80.html" class="md-nav__link">
+        00 前言
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/01%20%E7%AC%AC%E4%B8%80%E6%AD%A5%20-%20%E6%A6%82%E8%AE%BA%E4%B8%8E%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5.html" class="md-nav__link">
+        01 概论与基本概念
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/01.0-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%8F%91%E5%B1%95%E7%AE%80%E5%8F%B2.html" class="md-nav__link">
+        01.0 人工智能发展简史
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/01.1-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%9A%84%E5%AE%9A%E4%B9%89.html" class="md-nav__link">
+        01.2 人工智能的定义
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/01.2-%E8%8C%83%E5%BC%8F%E7%9A%84%E6%BC%94%E5%8C%96.html" class="md-nav__link">
+        01.2 范式的演化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/01.3-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        01.3 神经网络的基本工作原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/02.0-%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E4%B8%8E%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.html" class="md-nav__link">
+        02.0 反向传播与梯度下降
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/02.1-%E7%BA%BF%E6%80%A7%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD.html" class="md-nav__link">
+        02.1 线性反向传播
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/02.2-%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD.html" class="md-nav__link">
+        02.2 非线性反向传播
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/02.3-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.html" class="md-nav__link">
+        02.3 梯度下降
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/03.0-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0.html" class="md-nav__link">
+        03.0 损失函数
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/03.1-%E5%9D%87%E6%96%B9%E5%B7%AE%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0.html" class="md-nav__link">
+        03.1 均方差损失函数
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/03.2-%E4%BA%A4%E5%8F%89%E7%86%B5%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0.html" class="md-nav__link">
+        03.2 交叉熵损失函数
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_3" type="checkbox" id="__nav_2_2_3" >
+      
+      <label class="md-nav__link" for="__nav_2_2_3">
+        第二步、线性回归
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="第二步、线性回归" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          第二步、线性回归
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/04%20%E7%AC%AC%E4%BA%8C%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html" class="md-nav__link">
+        04 线性回归
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/04.0-%E5%8D%95%E5%85%A5%E5%8D%95%E5%87%BA%E5%8D%95%E5%B1%82-%E5%8D%95%E5%8F%98%E9%87%8F%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html" class="md-nav__link">
+        04.0 单变量线性回归
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/04.1-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95.html" class="md-nav__link">
+        04.1 最小二乘法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/04.2-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95.html" class="md-nav__link">
+        04.2 梯度下降法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/04.3-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%B3%95.html" class="md-nav__link">
+        04.3 神经网络法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/04.4-%E5%A4%9A%E6%A0%B7%E6%9C%AC%E8%AE%A1%E7%AE%97.html" class="md-nav__link">
+        04.4 多样本计算
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/04.5-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%9A%84%E4%B8%89%E7%A7%8D%E5%BD%A2%E5%BC%8F.html" class="md-nav__link">
+        04.5 梯度下降的三种形式
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/05.0-%E5%A4%9A%E5%85%A5%E5%8D%95%E5%87%BA%E5%8D%95%E5%B1%82-%E5%A4%9A%E5%8F%98%E9%87%8F%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html" class="md-nav__link">
+        05.0 多变量线性回归
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/05.1-%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B3%95.html" class="md-nav__link">
+        05.1 正规方程法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/05.2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%B3%95.html" class="md-nav__link">
+        05.2 神经网络法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/05.3-%E6%A0%B7%E6%9C%AC%E7%89%B9%E5%BE%81%E6%95%B0%E6%8D%AE%E6%A0%87%E5%87%86%E5%8C%96.html" class="md-nav__link">
+        05.3 样本特征数据标准化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/05.4-%E8%BF%98%E5%8E%9F%E5%8F%82%E6%95%B0%E5%80%BC.html" class="md-nav__link">
+        05.4 还原参数值
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/05.5-%E6%AD%A3%E7%A1%AE%E7%9A%84%E6%8E%A8%E7%90%86%E6%96%B9%E6%B3%95.html" class="md-nav__link">
+        05.5 正确的推理方法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC2%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/05.6-%E6%A0%87%E5%87%86%E5%8C%96%E6%A0%87%E7%AD%BE%E5%80%BC.html" class="md-nav__link">
+        05.6 标准化标签值
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_4" type="checkbox" id="__nav_2_2_4" >
+      
+      <label class="md-nav__link" for="__nav_2_2_4">
+        第三步、线性分类
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="第三步、线性分类" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          第三步、线性分类
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/06%20%E7%AC%AC%E4%B8%89%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        06 线性分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/06.0-%E5%A4%9A%E5%85%A5%E5%8D%95%E5%87%BA%E5%8D%95%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%BA%BF%E6%80%A7%E4%BA%8C%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        06. 线性二分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/06.1-%E4%BA%8C%E5%88%86%E7%B1%BB%E5%87%BD%E6%95%B0.html" class="md-nav__link">
+        06.1 二分类函数
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/06.2-%E7%BA%BF%E6%80%A7%E4%BA%8C%E5%88%86%E7%B1%BB%E5%AE%9E%E7%8E%B0.html" class="md-nav__link">
+        06.2 线性二分类实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/06.3-%E7%BA%BF%E6%80%A7%E4%BA%8C%E5%88%86%E7%B1%BB%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        06.3 线性二分类的工作原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/06.4-%E7%BA%BF%E6%80%A7%E4%BA%8C%E5%88%86%E7%B1%BB%E7%BB%93%E6%9E%9C%E5%8F%AF%E8%A7%86%E5%8C%96.html" class="md-nav__link">
+        06.4 线性二分类结果可视化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/06.5-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E4%B8%8E%E6%88%96%E9%9D%9E%E9%97%A8.html" class="md-nav__link">
+        06.5 实现逻辑与或非门
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/06.6-%E7%94%A8%E5%8F%8C%E6%9B%B2%E6%AD%A3%E5%88%87%E5%87%BD%E6%95%B0%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        06.6 用双曲正切函数分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/07.0-%E5%A4%9A%E5%85%A5%E5%A4%9A%E5%87%BA%E5%8D%95%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%BA%BF%E6%80%A7%E5%A4%9A%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        07.0 线性多分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/07.1-%E5%A4%9A%E5%88%86%E7%B1%BB%E5%87%BD%E6%95%B0.html" class="md-nav__link">
+        07.1 多分类函数
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/07.2-%E7%BA%BF%E6%80%A7%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AE%9E%E7%8E%B0.html" class="md-nav__link">
+        07.2 线性多分类实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/07.3-%E7%BA%BF%E6%80%A7%E5%A4%9A%E5%88%86%E7%B1%BB%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        07.3 线性多分类的工作原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC3%E6%AD%A5%20-%20%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/07.4-%E7%BA%BF%E6%80%A7%E5%A4%9A%E5%88%86%E7%B1%BB%E7%BB%93%E6%9E%9C%E5%8F%AF%E8%A7%86%E5%8C%96.html" class="md-nav__link">
+        07.4 线性多分类结果可视化
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_5" type="checkbox" id="__nav_2_2_5" >
+      
+      <label class="md-nav__link" for="__nav_2_2_5">
+        第四步、非线性回归
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="第四步、非线性回归" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          第四步、非线性回归
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/08%20%E7%AC%AC%E5%9B%9B%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html" class="md-nav__link">
+        08 非线性回归
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/08.0-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.html" class="md-nav__link">
+        08.0 激活函数
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/08.1-%E6%8C%A4%E5%8E%8B%E5%9E%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.html" class="md-nav__link">
+        08.1 挤压型激活函数
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/08.2-%E5%8D%8A%E7%BA%BF%E6%80%A7%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.html" class="md-nav__link">
+        08.2 半线性激活函数
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/09.0-%E5%8D%95%E5%85%A5%E5%8D%95%E5%87%BA%E5%8F%8C%E5%B1%82-%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html" class="md-nav__link">
+        09.0 非线性回归
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/09.1-%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%9E%E5%BD%92%E6%B3%95%E6%8B%9F%E5%90%88%E6%AD%A3%E5%BC%A6%E6%9B%B2%E7%BA%BF.html" class="md-nav__link">
+        09.1 多项式回归法拟合正弦曲线
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/09.2-%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%9E%E5%BD%92%E6%B3%95%E6%8B%9F%E5%90%88%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%9B%B2%E7%BA%BF.html" class="md-nav__link">
+        09.2 多项式回归法拟合复合函数曲线
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/09.3-%E9%AA%8C%E8%AF%81%E4%B8%8E%E6%B5%8B%E8%AF%95.html" class="md-nav__link">
+        09.3 验证与测试
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/09.4-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%9A%84%E5%AE%9E%E7%8E%B0.html" class="md-nav__link">
+        09.4 神经网络非线性回归的实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/09.5-%E6%9B%B2%E7%BA%BF%E6%8B%9F%E5%90%88.html" class="md-nav__link">
+        09.5 曲线拟合
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/09.6-%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        09.6 非线性回归的工作原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC4%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/09.7-%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98%E5%88%9D%E6%AD%A5.html" class="md-nav__link">
+        09.7 参数调优初步
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_6" type="checkbox" id="__nav_2_2_6" >
+      
+      <label class="md-nav__link" for="__nav_2_2_6">
+        第五步、非线性分类
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="第五步、非线性分类" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_6">
+          <span class="md-nav__icon md-icon"></span>
+          第五步、非线性分类
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/10%20%E7%AC%AC%E4%BA%94%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        10 非线性分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/10.0-%E5%A4%9A%E5%85%A5%E5%8D%95%E5%87%BA%E5%8F%8C%E5%B1%82-%E9%9D%9E%E7%BA%BF%E6%80%A7%E4%BA%8C%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        10.0 非线性二分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/10.1-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%85%E9%A1%BB%E7%94%A8%E5%8F%8C%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        10.1 为什么必须用双层神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/10.2-%E9%9D%9E%E7%BA%BF%E6%80%A7%E4%BA%8C%E5%88%86%E7%B1%BB%E5%AE%9E%E7%8E%B0.html" class="md-nav__link">
+        10.2 非线性二分类实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/10.3-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%BC%82%E6%88%96%E9%97%A8.html" class="md-nav__link">
+        10.3 实现逻辑异或门
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/10.4-%E9%80%BB%E8%BE%91%E5%BC%82%E6%88%96%E9%97%A8%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        10.4 逻辑异或门的工作原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/10.5-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%BC%A7%E5%BD%A2%E4%BA%8C%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        10.5 实现双弧形二分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/10.6-%E5%8F%8C%E5%BC%A7%E5%BD%A2%E4%BA%8C%E5%88%86%E7%B1%BB%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        10.6 双弧形二分类的工作原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/11.0-%E5%A4%9A%E5%85%A5%E5%A4%9A%E5%87%BA%E5%8F%8C%E5%B1%82-%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%A4%9A%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        11.0 非线性多分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/11.1-%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AE%9E%E7%8E%B0.html" class="md-nav__link">
+        11.1 非线性多分类实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/11.2-%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%A4%9A%E5%88%86%E7%B1%BB%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        11.2 非线性多分类的工作原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/11.3-%E5%88%86%E7%B1%BB%E6%A0%B7%E6%9C%AC%E4%B8%8D%E5%B9%B3%E8%A1%A1%E9%97%AE%E9%A2%98.html" class="md-nav__link">
+        11.3 分类样本不平衡问题
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/12.0-%E5%A4%9A%E5%85%A5%E5%A4%9A%E5%87%BA%E4%B8%89%E5%B1%82-%E5%A4%9A%E5%8F%98%E9%87%8F%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        12.0  多变量非线性分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/12.1-%E4%B8%89%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%AE%9E%E7%8E%B0.html" class="md-nav__link">
+        12.1 三层神经网络的实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/12.2-%E6%A2%AF%E5%BA%A6%E6%A3%80%E6%9F%A5.html" class="md-nav__link">
+        12.2 梯度检查
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC5%E6%AD%A5%20-%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/12.3-%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%8E%E6%89%B9%E5%A4%A7%E5%B0%8F.html" class="md-nav__link">
+        12.3 学习率与批大小
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_7" type="checkbox" id="__nav_2_2_7" >
+      
+      <label class="md-nav__link" for="__nav_2_2_7">
+        第六步、模型部署
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="第六步、模型部署" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_7">
+          <span class="md-nav__icon md-icon"></span>
+          第六步、模型部署
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC6%E6%AD%A5%20-%20%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/13%20%E7%AC%AC%E5%85%AD%E6%AD%A5%20-%20%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8E%A8%E7%90%86%E4%B8%8E%E9%83%A8%E7%BD%B2.html" class="md-nav__link">
+        13 模型的推理与部署
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC6%E6%AD%A5%20-%20%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/13.0-%E6%89%8B%E5%B7%A5%E6%B5%8B%E8%AF%95%E8%AE%AD%E7%BB%83%E6%95%88%E6%9E%9C.html" class="md-nav__link">
+        13.0 手工测试训练效果
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC6%E6%AD%A5%20-%20%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/13.1-%E6%A8%A1%E5%9E%8B%E6%96%87%E4%BB%B6%E6%A6%82%E8%BF%B0.html" class="md-nav__link">
+        13.1 模型文件概述
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC6%E6%AD%A5%20-%20%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/13.2-ONNX%E6%A8%A1%E5%9E%8B%E6%96%87%E4%BB%B6.html" class="md-nav__link">
+        13.2 ONNX模型文件
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC6%E6%AD%A5%20-%20%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/13.3-Windows%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%83%A8%E7%BD%B2.html" class="md-nav__link">
+        13.3 Windows中模型的部署
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_8" type="checkbox" id="__nav_2_2_8" >
+      
+      <label class="md-nav__link" for="__nav_2_2_8">
+        第七步、深度神经网络
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="第七步、深度神经网络" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_8">
+          <span class="md-nav__icon md-icon"></span>
+          第七步、深度神经网络
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/14%20%E7%AC%AC%E4%B8%83%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        14 深度神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/14.0-%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6.html" class="md-nav__link">
+        14.0 搭建深度神经网络框架
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/14.1-%E5%9B%9E%E5%BD%92%E4%BB%BB%E5%8A%A1%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95.html" class="md-nav__link">
+        14.1 回归任务功能测试
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/14.2-%E5%9B%9E%E5%BD%92%E4%BB%BB%E5%8A%A1%E7%9C%9F%E5%AE%9E%E6%A1%88%E4%BE%8B.html" class="md-nav__link">
+        14.2 回归任务真实案例
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/14.3-%E4%BA%8C%E5%88%86%E7%B1%BB%E4%BB%BB%E5%8A%A1%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95.html" class="md-nav__link">
+        14.3 二分类任务功能测试
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/14.4-%E4%BA%8C%E5%88%86%E7%B1%BB%E4%BB%BB%E5%8A%A1%E7%9C%9F%E5%AE%9E%E6%A1%88%E4%BE%8B.html" class="md-nav__link">
+        14.4 二分类任务真实案例
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/14.5-%E5%A4%9A%E5%88%86%E7%B1%BB%E4%BB%BB%E5%8A%A1%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95.html" class="md-nav__link">
+        14.5 多分类任务功能测试
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/14.6-%E5%A4%9A%E5%88%86%E7%B1%BB%E4%BB%BB%E5%8A%A1%E7%9C%9F%E5%AE%9E%E6%A1%88%E4%BE%8B.html" class="md-nav__link">
+        14.6多分类任务真实案例
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/15.0-%E7%BD%91%E7%BB%9C%E4%BC%98%E5%8C%96.html" class="md-nav__link">
+        15.0 网络优化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/15.1-%E6%9D%83%E9%87%8D%E7%9F%A9%E9%98%B5%E5%88%9D%E5%A7%8B%E5%8C%96.html" class="md-nav__link">
+        15.1 权重矩阵初始化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/15.2-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95.html" class="md-nav__link">
+        15.2 梯度下降优化算法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/15.3-%E8%87%AA%E9%80%82%E5%BA%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%AE%97%E6%B3%95.html" class="md-nav__link">
+        15.3 自适应学习率算法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/15.4-%E7%AE%97%E6%B3%95%E6%95%88%E6%9E%9C%E6%AF%94%E8%BE%83.html" class="md-nav__link">
+        15.4 算法效果比较
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/15.5-%E6%89%B9%E9%87%8F%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        15.5 批量归一化的原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/15.6-%E6%89%B9%E9%87%8F%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E5%AE%9E%E7%8E%B0.html" class="md-nav__link">
+        15.6 批量归一化的实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/16.0-%E6%AD%A3%E5%88%99%E5%8C%96.html" class="md-nav__link">
+        16.0 正则化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/16.1-%E5%81%8F%E5%B7%AE%E4%B8%8E%E6%96%B9%E5%B7%AE.html" class="md-nav__link">
+        16.1 偏差与方差
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/16.2-L2%E6%AD%A3%E5%88%99.html" class="md-nav__link">
+        16.2 L2正则
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/16.3-L1%E6%AD%A3%E5%88%99.html" class="md-nav__link">
+        16.3 L1正则
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/16.4-%E6%97%A9%E5%81%9C%E6%B3%95.html" class="md-nav__link">
+        16.4 早停法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/16.5-%E4%B8%A2%E5%BC%83%E6%B3%95.html" class="md-nav__link">
+        16.5 丢弃法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/16.6-%E6%95%B0%E6%8D%AE%E6%89%A9%E5%B1%95.html" class="md-nav__link">
+        16.6 数据扩展
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC7%E6%AD%A5%20-%20%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/16.7-%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0.html" class="md-nav__link">
+        16.7 集成学习
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_9" type="checkbox" id="__nav_2_2_9" >
+      
+      <label class="md-nav__link" for="__nav_2_2_9">
+        第八步、卷积神经网络
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="第八步、卷积神经网络" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_9">
+          <span class="md-nav__icon md-icon"></span>
+          第八步、卷积神经网络
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/17%20%E7%AC%AC%E5%85%AB%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        17 卷积神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/17.0-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        17.0 卷积神经网络原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/17.1-%E5%8D%B7%E7%A7%AF%E7%9A%84%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        17.1 卷积的前向计算原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/17.2-%E5%8D%B7%E7%A7%AF%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0.html" class="md-nav__link">
+        17.2 卷积前向计算代码实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/17.3-%E5%8D%B7%E7%A7%AF%E7%9A%84%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        17.3 卷积的反向传播原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/17.4-%E5%8D%B7%E7%A7%AF%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0.html" class="md-nav__link">
+        17.4 卷积反向传播代码实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/17.5-%E6%B1%A0%E5%8C%96%E7%9A%84%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E4%B8%8E%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD.html" class="md-nav__link">
+        17.5 池化的前向计算与反向传播
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/18.0-%E7%BB%8F%E5%85%B8%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B.html" class="md-nav__link">
+        18.0 经典卷积神经网络模型
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/18.1-%E5%AE%9E%E7%8E%B0%E9%A2%9C%E8%89%B2%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        18.1 实现颜色分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/18.2-%E5%AE%9E%E7%8E%B0%E5%87%A0%E4%BD%95%E5%9B%BE%E5%BD%A2%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        18.2 实现几何图形分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/18.3-%E5%AE%9E%E7%8E%B0%E5%87%A0%E4%BD%95%E5%9B%BE%E5%BD%A2%E5%8F%8A%E9%A2%9C%E8%89%B2%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        18.3 实现几何图形及颜色分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/18.4-MNIST%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        18.4 MNIST分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/18.5-Fashion-MNIST%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        18.5 Fashion-MNIST分类
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC8%E6%AD%A5%20-%20%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/18.6-Cifar-10%E5%88%86%E7%B1%BB.html" class="md-nav__link">
+        18.6 Cifar-10分类
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_10" type="checkbox" id="__nav_2_2_10" >
+      
+      <label class="md-nav__link" for="__nav_2_2_10">
+        第九步、循环神经网络
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="第九步、循环神经网络" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_10">
+          <span class="md-nav__icon md-icon"></span>
+          第九步、循环神经网络
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/19%20%E7%AC%AC%E4%B9%9D%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        19 循环神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/19.0-%E6%99%AE%E9%80%9A%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        19.0 普通循环神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/19.1-%E4%B8%A4%E4%B8%AA%E6%97%B6%E9%97%B4%E6%AD%A5%E7%9A%84%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        19.1 两个时间步的循环神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/19.2-%E5%9B%9B%E4%B8%AA%E6%97%B6%E9%97%B4%E6%AD%A5%E7%9A%84%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        19.2 四个时间步的循环神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/19.3-%E9%80%9A%E7%94%A8%E7%9A%84%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B.html" class="md-nav__link">
+        19.3 通用的循环神经网络模型
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/19.4-%E7%A9%BA%E6%B0%94%E8%B4%A8%E9%87%8F%E9%A2%84%E6%B5%8B.html" class="md-nav__link">
+        19.4 空气质量预测
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/19.5-%E4%B8%8D%E5%AE%9A%E9%95%BF%E6%97%B6%E5%BA%8F%E7%9A%84%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        19.5 不定长时序的循环神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/19.6-%E6%B7%B1%E5%BA%A6%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        19.6 深度循环神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/19.7-%E5%8F%8C%E5%90%91%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        19.7 双向循环神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/20.0-%E9%AB%98%E7%BA%A7%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html" class="md-nav__link">
+        20.0 高级循环神经网络
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/20.1-LSTM%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        20.1 LSTM基本原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/20.2-LSTM%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0.html" class="md-nav__link">
+        20.2 LSTM代码实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/20.3-GRU%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86.html" class="md-nav__link">
+        20.3 GRU基本原理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC9%E6%AD%A5%20-%20%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/20.4-%E5%BA%8F%E5%88%97%E5%88%B0%E5%BA%8F%E5%88%97.html" class="md-nav__link">
+        20.4 序列到序列
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      <label class="md-nav__link" for="__nav_2_3">
+        现代软件工程
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="现代软件工程" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          现代软件工程
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/README.md" class="md-nav__link">
+        本课介绍
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3_2" type="checkbox" id="__nav_2_3_2" >
+      
+      <label class="md-nav__link" for="__nav_2_3_2">
+        一、架构之路
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="一、架构之路" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          一、架构之路
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第0部分 架构之路/0.0 封面.md" class="md-nav__link">
+        1.封面
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3_3" type="checkbox" id="__nav_2_3_3" >
+      
+      <label class="md-nav__link" for="__nav_2_3_3">
+        二、概论
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="二、概论" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          二、概论
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第1部分 概论/1-课程介绍.md" class="md-nav__link">
+        1.课程介绍
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第1部分 概论/1.1 木头与软件工程的故事.md" class="md-nav__link">
+        2.木头与软件工程的故事
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第1部分 概论/1.2 故事分析.md" class="md-nav__link">
+        3.故事分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第1部分 概论/1.3 什么是软件工程.md" class="md-nav__link">
+        4.什么是软件工程
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第1部分 概论/1.4 软件工程领域知识.md" class="md-nav__link">
+        5.软件工程领域知识
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第1部分 概论/1.5 软件工程在微软.md" class="md-nav__link">
+        6.软件工程在微软
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3_4" type="checkbox" id="__nav_2_3_4" >
+      
+      <label class="md-nav__link" for="__nav_2_3_4">
+        三、用户与需求
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="三、用户与需求" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          三、用户与需求
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第2部分 个人与团队/3. 个人能力.md" class="md-nav__link">
+        1.个人能力
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第2部分 个人与团队/3.1 木头与微软面试的故事.md" class="md-nav__link">
+        2.木头与微软面试的故事
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第2部分 个人与团队/3.2 故事分析.md" class="md-nav__link">
+        3.故事分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第2部分 个人与团队/3.3 微软的软件工程师.md" class="md-nav__link">
+        4.微软的软件工程师
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第2部分 个人与团队/4. 团队流程.md" class="md-nav__link">
+        5.团队流程
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第2部分 个人与团队/4.1 木头与团队合作的故事.md" class="md-nav__link">
+        6.木头与团队合作的故事
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A5-现代软件工程（更新中）/第2部分 个人与团队/4.2 故事分析.md" class="md-nav__link">
+        7.故事分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_4" type="checkbox" id="__nav_2_4" >
+      
+      <label class="md-nav__link" for="__nav_2_4">
+        人工智能系统
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="人工智能系统" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          人工智能系统
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../A6-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%B3%BB%E7%BB%9F/index.html" class="md-nav__link">
+        本课介绍
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A6-人工智能系统/Lectures/README.md" class="md-nav__link">
+        课程目录
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_4_3" type="checkbox" id="__nav_2_4_3" >
+      
+      <label class="md-nav__link" for="__nav_2_4_3">
+        实验
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="实验" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          实验
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A6-人工智能系统/Labs/BasicLabs/Lab1/README.md" class="md-nav__link">
+        1. 框架及工具入门示例
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A6-人工智能系统/Labs/BasicLabs/Lab2/README.md" class="md-nav__link">
+        2. 定制一个新的张量运算
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A6-人工智能系统/Labs/BasicLabs/Lab3/README.md" class="md-nav__link">
+        3. CUDA实现和优化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A6-人工智能系统/Labs/BasicLabs/Lab4/README.md" class="md-nav__link">
+        4 AllReduce的实现和优化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A6-人工智能系统/Labs/BasicLabs/Lab5/README.md" class="md-nav__link">
+        5. 配置Container进行云上训练或推理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A6-人工智能系统/Labs/AdvancedLabs/Lab6/README.md" class="md-nav__link">
+        6. 学习使用调度管理系统
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A6-人工智能系统/Labs/AdvancedLabs/Lab7/README.md" class="md-nav__link">
+        7. 分布式训练任务练习
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A6-人工智能系统/Labs/AdvancedLabs/Lab8/README.md" class="md-nav__link">
+        8 自动机器学习系统练习
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../基础教程/A6-人工智能系统/Labs/AdvancedLabs/Lab9/README.md" class="md-nav__link">
+        9 强化学习系统练习
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        实践案例
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="实践案例" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          实践案例
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/index.html" class="md-nav__link">
+        本页介绍
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B01-%E6%BC%AB%E7%94%BB%E7%BF%BB%E8%AF%91/index.html" class="md-nav__link">
+        1.漫画翻译
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B02-%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%AF%B9%E8%AF%9D%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%9C%8D%E5%8A%A1/index.html" class="md-nav__link">
+        2.问答系统和对话机器人服务
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B03-%E7%9C%8B%E5%9B%BE%E8%AF%86%E7%86%8A/index.html" class="md-nav__link">
+        3.看图识熊
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B04-%E6%99%BA%E8%83%BD%E5%AE%B6%E5%B1%85/index.html" class="md-nav__link">
+        4.智能家居
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B05-%E6%96%87%E6%9C%AC%E6%9C%97%E8%AF%BB%E5%BA%94%E7%94%A8/index.html" class="md-nav__link">
+        5.文本朗读应用
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B06-%E6%90%AD%E5%BB%BA%E4%B8%AD%E9%97%B4%E6%9C%8D%E5%8A%A1%E5%B1%82/index.html" class="md-nav__link">
+        6.搭建中间服务层
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B07-%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/index.html" class="md-nav__link">
+        7.手写数字识别
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B08-%E9%BB%84%E9%87%91%E7%82%B9%E6%B8%B8%E6%88%8F/index.html" class="md-nav__link">
+        8.黄金点游戏
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B09-%E6%89%8B%E5%86%99%E7%AE%97%E5%BC%8F%E8%AE%A1%E7%AE%97%E5%99%A8/index.html" class="md-nav__link">
+        9.手写算式计算器
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B10-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B9%B3%E5%8F%B0%E5%BB%BA%E8%AE%BE/index.html" class="md-nav__link">
+        10.机器学习平台建设
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B11-%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%A1%88%E4%BE%8B/index.html" class="md-nav__link">
+        11.量化交易案例
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B12-%E5%9F%BA%E4%BA%8E%E8%BF%91%E9%82%BB%E5%9B%BE%E7%9A%84%E5%90%91%E9%87%8F%E6%90%9C%E7%B4%A2%E6%A1%88%E4%BE%8B/index.html" class="md-nav__link">
+        12.基于近邻图的向量搜索案例
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B13-AI%E5%AF%B9%E8%81%94%E7%94%9F%E6%88%90%E6%A1%88%E4%BE%8B/index.html" class="md-nav__link">
+        13.AI对联生成案例
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B14-%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E4%B8%AD%E6%96%87%E6%96%87%E6%9C%AC%E8%95%B4%E5%90%AB%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B/index.html" class="md-nav__link">
+        14.快速构建中文文本蕴含深度学习模型
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B15-%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%BB%A3%E7%A0%81%E6%90%9C%E7%B4%A2%E6%A1%88%E4%BE%8B/index.html" class="md-nav__link">
+        15.基于深度学习的代码搜索案例
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B16-%E5%9F%BA%E4%BA%8ELightGBM%E7%9A%84%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E9%A2%84%E6%B5%8B/index.html" class="md-nav__link">
+        16.基于LightGBM的时间序列预测
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../News.html" class="md-nav__link">
+        最新动态
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        关于我们
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="关于我们" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          关于我们
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../about.html" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../LICENSE.md" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/microsoft/ai-edu/edit/master/docs/基础教程/A5-现代软件工程（更新中）/第8步 - 前沿与探索/第18章 - 前沿探索/18.6 基于测试用例生成的代码生成方法.md" title="编辑此页" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>18.6 基于测试用例生成的代码生成方法</h1>
+                
+                <h2 id="186">18.6 基于测试用例生成的代码生成方法<a class="headerlink" href="#186" title="Permanent link">⚓︎</a></h2>
+<p>本文摘录自微软亚洲研究院 DKI 组的一篇论文，利用大模型（Large Language Models，LLMs）探索通过一种新颖的方式：通过测试用例与大模型生成代码的匹配关系来确定最优生成代码。这对于作为软件工程师的读者开阔思路很有好处，尤其是可以思考我们的代码如何写才是最佳的？我们的测试用例是否可以覆盖代码所涉及的方方面面？<span><span class="MathJax_Preview">^{[6]}</span><script type="math/tex">^{[6]}</script></span></p>
+<p>原文标题：CODET: Code Generation with Generated Tests
+原文链接：https://arxiv.org/pdf/2207.10397.pdf
+原文作者：
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>· Bei Chen, Microsoft Research Beijing China, beichen@microsoft.com
+<span class="linenos" data-linenos="2 "></span>· Fengji Zhang, v-fengjzhang@microsoft.com
+<span class="linenos" data-linenos="3 "></span>· Anh Nguyen, anhnguyen@microsoft.com
+<span class="linenos" data-linenos="4 "></span>· Daoguang Zan, v-dazan@microsoft.com
+<span class="linenos" data-linenos="5 "></span>· Zeqi Lin, Microsoft Research Beijing China, zeqi.lin@microsoft.com
+<span class="linenos" data-linenos="6 "></span>· Jian-Guang Lou, Microsoft Research Beijing China, jlou@microsoft.com
+<span class="linenos" data-linenos="7 "></span>· Weizhu Chen, wzchen@microsoft.com
+</code></pre></div>
+主要作者简介：</p>
+<p>陈蓓，微软亚洲研究院主管研究员。博士毕业于清华大学计算机系，师从张钹院士及朱军教授。她的研究兴趣主要为自然语言处理、大规模语言模型及其应用，例如语义解析、对话系统、代码智能等。在领域顶级会议如 NeurIPS，ICLR，ACL，EMNLP，IJCAI，AAAI，KDD 等发表论文 30 余篇。近年来在语言模型与软件工程交叉领域发表多篇论文，包括代码生成，代码修复等任务。</p>
+<h3 id="_1">摘要<a class="headerlink" href="#_1" title="Permanent link">⚓︎</a></h3>
+<p>得益于预训练语言模型如 CodeX 等的发展，我们能够为给定的编程问题自动生成代码代码解决方案（以下简称为“代码解”）。一般来说，预训练语言模型会生成多个不同的代码解，而从中选择出最为准确的代码解仍然是一个很大的挑战（例如，pass@100 通常比 pass@1 高很多）。验证一个代码解准确性最简单的方法是使用一组测试用例来执行它。然而，人工构建这样的测试用例是费时费力的。本报告旨在探索这样一个问题：预训练语言模型可以进行自我验证吗？我们提出了一个有趣的方法 CODET，它能够利用相同的预训练语言模型为代码解生成多个测试用例，从而降低人工成本。CODET 将生成的多个代码解在测试用例上执行，并进行双向执行一致性判断，从而挑选出最为准确的代码解。我们使用 5 个不同大小和能力的预训练语言模型，在 4 个有名的代码生成数据集上做了试验。试验结果证实 CODET 能够极大地提升代码生成的性能，其中 CODET 将 HumanEval 数据集的 pass@1 分数提升至 65.8%，比现有最高分数还要高 20+%。</p>
+<h3 id="1861">18.6.1 引言<a class="headerlink" href="#1861" title="Permanent link">⚓︎</a></h3>
+<p>尽管代码生成的预训练技术取得了显着进步，但从大型语言模型生成的多个候选者中选择正确的代码解仍然是一个难题。例如，CodeX，一种最先进的代码预训练语言模型生成，可以实现 pass@100（如果给定的 100 个生成的代码解中有一个或多个可以通过相应的测试用例）为 77.4%，但在 HumanEval 基准上的 pass@1（单个代码解的正确率）仅为 33.5%。这个巨大的差距限制了代码生成模型的实用性，并激励我们探索如何选择正确的或多个候选的最佳代码解。</p>
+<p>验证代码解正确性的一种直接方法是执行代码并检查它是否通过所有相应的测试用例。这种以执行为导向的方法已在各种领域得到广泛采用与代码相关的任务，例如代码生成、代码翻译、和程序合成。然而，这种方法在很大程度上依赖于测试用例的质量和数量，而这通常是昂贵的创建和维护非常耗时。此外，在像 Copilot2 这样的真实应用中，辅助开发者编写代码的代码生成工具，指望用户提供每个问题的测试用例是不现实的。因此，我们建议自动生成任意编程问题的测试用例，并使用它们快速验证任何代码解。</p>
+<p><img src="img/17-6-1.SVG"/></p>
+<p>图 17-6 CODET 协议</p>
+<p>在本文中，我们提出了 CODET 协议，如图 17-6 所示。首先，我们利用相同的预训练语言模型生成代码解，例如 CodeX，通过提供详细说明作为提示，为每个编程问题生成大量测试用例。接下来，受经典 RANSAC 算法启发，使用双向执行协议（Dual Execution Agreement）和测试用例，在每个生成的代码解上运行测试用例，并迭代地找到多组代码解和测试用例对。每组代码都能通过相同的测试用例，表明它们具有相同的功能，即使它们在实现上不同。我们期望能通过更多测试用例的代码解是更正确的，并且具有更多相似的代码解，比如，同一共识集中的代码解与问题描述更一致。因此，我们根据其中的测试用例和代码解的数量对每个共识集进行排名，并从排名最高的共识集中选择最佳代码解。</p>
+<p>这种方法简单高效，因为它不需要任何标记数据或额外的排序器，但它实现了令人惊讶的卓越性能。我们在五个预训练语言模型使用这种方法做评估：三个 OpenAI CodeX 模型，INCODER 和 CODEGEN，以及四个已建立的代码生成基准：HumanEval、MBPP、APPS 和 CodeContests。试验结果表明该方法可以有效地从多个候选者中选择正确的代码解，提高了 pass@1 在所有基准测试中的得分。例如，CODET 实现了使用 code-davinci-002 的改进：HumanEval (47.0% → 65.8%)，MBPP (58.1% → 67.7%)，APPS (27.2% → 34.6%) 和 CodeContests (0.7% → 2.1%)。此外，当我们将最强大的预训练模型 code-davinci-002 和 CODET 结合起来，大幅领先于之前最先进的方法，例如 HumanEval：42.7% → 65.8%。</p>
+<h3 id="1862">18.6.2 方法<a class="headerlink" href="#1862" title="Permanent link">⚓︎</a></h3>
+<p>代码生成的任务是解决一个编程问题：在上下文 <span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> 中生成代码 <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>。 如图 17-7 所示，上下文 <span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> 中包含自然语言问题描述代码注释的形式，以及包含 imports 和 function 等语句的代码片段标头。通常，我们采样一组代码解，表示为 <span><span class="MathJax_Preview">X = \{x_1, x_2, ..., x_N \}</span><script type="math/tex">X = \{x_1, x_2, ..., x_N \}</script></span>，基于在上下文 <span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> 上使用预训练的语言模型 <span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span>，可以表示为 <span><span class="MathJax_Preview">X = M(c)</span><script type="math/tex">X = M(c)</script></span>。我们的目标是从一组生成的代码解 <span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span> 中选择最佳代码解 <span><span class="MathJax_Preview">\hat{x}</span><script type="math/tex">\hat{x}</script></span>，其中 <span><span class="MathJax_Preview">\hat{x}</span><script type="math/tex">\hat{x}</script></span> 是正确解决给定编程问题的最有可能的代码解。为此，我们提出 CODET，希望利用预训练语言模型 <span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span> 的力量。具体来说，我们使用 <span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span> 为编程问题生成测试用例（18.6.1-1），然后根据双向执行协议选择最佳代码解 <span><span class="MathJax_Preview">\hat{x}</span><script type="math/tex">\hat{x}</script></span>（18.6.2-2）。</p>
+<p><img src="img/17-6-2.SVG"/></p>
+<p>图 17-7 代码生成与测试用例生成</p>
+<h4 id="1">1. 测试用例生成<a class="headerlink" href="#1" title="Permanent link">⚓︎</a></h4>
+<p>除了生成代码解，还需要生成测试用例来评估其正确性。测试用例是定义在上下文函数中的一对输入和预期输出。例如，在图 17-7 中，测试用例列表中是否存在小于阈值的近似值。为了生成测试用例，我们使用与生成代码解相同的预训练语言模型 <span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span>，但我们添加了一条指令 <span><span class="MathJax_Preview">p</span><script type="math/tex">p</script></span> 到上下文 <span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> 作为提示，表明需要测试用例而不是代码解。指令 <span><span class="MathJax_Preview">p</span><script type="math/tex">p</script></span> 由三部分组成：
+（1）一个“pass”语句作为占位符，这表明不需要为函数生成代码。
+（2）一条注释语句“检查入口点的正确性”，以阐明生成测试用例的意图，其中“入口点”是函数的名称。
+ (3) 一条“assert”语句启动测试用例生成，指定测试用例的格式为输入-输出对。</p>
+<p>然后，我们将连接的上下文和指令 <span><span class="MathJax_Preview">concat(c, p)</span><script type="math/tex">concat(c, p)</script></span> 提供给语言模型 <span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span>，并从模型输出中抽取一组测试用例，表示为 <span><span class="MathJax_Preview">Y = \{y_1, y_2, ..., y_M\}</span><script type="math/tex">Y = \{y_1, y_2, ..., y_M\}</script></span>。测试用例的生成过程可以表示为 <span><span class="MathJax_Preview">Y = M(concat(c, p))</span><script type="math/tex">Y = M(concat(c, p))</script></span>。语言模型会尝试通过为函数生成合理的输入输出对来完成指令。注意在生成代码解之前，我们从上下文 <span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> 中删除所有示例输入输出案例，以避免将真实的测试用例暴露给语言模型，并增加多样性和生成的测试用例的难度。</p>
+<h4 id="2">2. 双向执行协议<a class="headerlink" href="#2" title="Permanent link">⚓︎</a></h4>
+<p>在本小节中将解释如何使用生成的测试用例集 <span><span class="MathJax_Preview">Y = \{y_1, y_2, ..., y_M\}</span><script type="math/tex">Y = \{y_1, y_2, ..., y_M\}</script></span> 作为一个标准从生成的代码集 <span><span class="MathJax_Preview">X = \{x_1, x_2,..., x_N \}</span><script type="math/tex">X = \{x_1, x_2,..., x_N \}</script></span> 中选择最佳代码解 <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>。我们可以在测试用例 <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> 上执行代码解 <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>，这意味着使用 <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> 的输入运行由 <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> 定义的函数，并将输出与 <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> 的输出部分进行比较。如果代码解 <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> 可以无错误地执行并且输出与预期输出匹配，那么代码解 <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> 可以通过测试用例 <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>。此外，两个代码解 <span><span class="MathJax_Preview">x_i</span><script type="math/tex">x_i</script></span> 和 <span><span class="MathJax_Preview">x_j</span><script type="math/tex">x_j</script></span> 如果可以通过 <span><span class="MathJax_Preview">Y</span><script type="math/tex">Y</script></span> 中的同一组测试用例，则认为它们之间有一个功能协议（即两个函数的实现不同但具有相同的功能）。我们的方法基于以下假设：</p>
+<p>（1）给定某个编程问题，代码解和测试用例是独立的，并且是从预训练语言模型 <span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span> 中随机抽样的。
+（2）不正确的代码解往往是多种多样的，并且在两个错误代码解之间具有功能协议的出现概率非常低。</p>
+<p>这些假设是类似于经典的 RANSAC 算法，这是一个稳健的在嘈杂数据中找到共识的方法。受 RANSAC 的启发，我们提出了我们的方法 CODET 执行双向执行协议，这是一种迭代方法，如下所示：</p>
+<ul>
+<li>从所有可能的 <span><span class="MathJax_Preview">D = \{(x, y)|x ∈ X, y ∈Y\}</span><script type="math/tex">D = \{(x, y)|x ∈ X, y ∈Y\}</script></span> 中随机选择 <span><span class="MathJax_Preview">(x,y)</span><script type="math/tex">(x,y)</script></span>。然后尝试在测试用例 <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> 上执行代码解 <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>。如果 <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> 可以通过 <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>，那么我们说 <span><span class="MathJax_Preview">(x, y)</span><script type="math/tex">(x, y)</script></span> 对是一个假设解（hypothetical inlier，直译为假设的内点），因为它假设地描述了编程问题的正确功能。否则，我们说 <span><span class="MathJax_Preview">(x, y)</span><script type="math/tex">(x, y)</script></span> 是异常解，因为它没有描述正确的功能。图 17-8 显示了一个简单的示例编程问题“返回数字的平方”。<span><span class="MathJax_Preview">(x_1, y_1)</span><script type="math/tex">(x_1, y_1)</script></span> 和 <span><span class="MathJax_Preview">(x_3, y_2)</span><script type="math/tex">(x_3, y_2)</script></span> 是两个假设解，而 <span><span class="MathJax_Preview">(x_1, y_4)</span><script type="math/tex">(x_1, y_4)</script></span> 和 <span><span class="MathJax_Preview">(x_3, y_1)</span><script type="math/tex">(x_3, y_1)</script></span> 是两个异常解。</li>
+</ul>
+<p><img src="img/17-6-3.SVG"/></p>
+<p>图 17-8 代码解和测试用例的对应关系</p>
+<ul>
+<li>
+<p>如果 <span><span class="MathJax_Preview">(x, y)</span><script type="math/tex">(x, y)</script></span> 是一个假设解，我们从 <span><span class="MathJax_Preview">D</span><script type="math/tex">D</script></span> 中收集所有与它一致的对，形成一个集合 <span><span class="MathJax_Preview">S</span><script type="math/tex">S</script></span>，称为共识集。为了找到一致的对 <span><span class="MathJax_Preview">(x, y)</span><script type="math/tex">(x, y)</script></span>，首先找到 <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> 可以通过的所有测试用例，记为 <span><span class="MathJax_Preview">S_y</span><script type="math/tex">S_y</script></span>。然后，我们找到所有可以通过与 <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> 完全相同的测试用例的代码解，表示为 <span><span class="MathJax_Preview">S_x</span><script type="math/tex">S_x</script></span>。最后，共识集是包含来自 <span><span class="MathJax_Preview">S_x</span><script type="math/tex">S_x</script></span> 的代码解和测试用例的所有对的集合来自 <span><span class="MathJax_Preview">S_y</span><script type="math/tex">S_y</script></span>，即 <span><span class="MathJax_Preview">S = \{(x, y)|x ∈ S_x, y ∈ S_y\}</span><script type="math/tex">S = \{(x, y)|x ∈ S_x, y ∈ S_y\}</script></span>。例如在图 17-8 中，我们可以得到 <span><span class="MathJax_Preview">S_x = \{x_1, x_2\}, S_y = \{y_1, y_2, y_3\}</span><script type="math/tex">S_x = \{x_1, x_2\}, S_y = \{y_1, y_2, y_3\}</script></span> 来自假设解 <span><span class="MathJax_Preview">(x_1, y_1)</span><script type="math/tex">(x_1, y_1)</script></span>（上方绿色部分）和 <span><span class="MathJax_Preview">S_x = \{x_3\}，S_y = \{y_2, y_3, y_4, y_5\}</span><script type="math/tex">S_x = \{x_3\}，S_y = \{y_2, y_3, y_4, y_5\}</script></span> 来自 <span><span class="MathJax_Preview">(x_3, y_2)</span><script type="math/tex">(x_3, y_2)</script></span>（下方紫色部分）。</p>
+</li>
+<li>
+<p>我们将共识集评分为 <span><span class="MathJax_Preview">f(S) = |S_x||S_y|</span><script type="math/tex">f(S) = |S_x||S_y|</script></span>，其中 <span><span class="MathJax_Preview">|S_x|</span><script type="math/tex">|S_x|</script></span> 是 <span><span class="MathJax_Preview">S_x</span><script type="math/tex">S_x</script></span> 中的生成代码数，<span><span class="MathJax_Preview">|S_y|</span><script type="math/tex">|S_y|</script></span> 是 <span><span class="MathJax_Preview">S_y</span><script type="math/tex">S_y</script></span> 中的测试用例数。这个分数等于在共识集中的成对的数量。直觉是，与假设一致的对越多，此功能越有可能是正确的。按照图 17-8 中的示例，<span><span class="MathJax_Preview">(x_1, y_1)</span><script type="math/tex">(x_1, y_1)</script></span> 的假设共识集分数为 <span><span class="MathJax_Preview">2 \times 3=6</span><script type="math/tex">2 \times 3=6</script></span>，因为 <span><span class="MathJax_Preview">|S_x| = |\{x_1, x_2\}|=2</span><script type="math/tex">|S_x| = |\{x_1, x_2\}|=2</script></span>，<span><span class="MathJax_Preview">|S_y| = |\{y_1, y_2, y_3\}|=3</span><script type="math/tex">|S_y| = |\{y_1, y_2, y_3\}|=3</script></span>；而 <span><span class="MathJax_Preview">(x_3, y_2)</span><script type="math/tex">(x_3, y_2)</script></span> 的假设分数为 <span><span class="MathJax_Preview">1\times4=4</span><script type="math/tex">1\times4=4</script></span>，因为 <span><span class="MathJax_Preview">|S_x| = |\{x_3\}|=1</span><script type="math/tex">|S_x| = |\{x_3\}|=1</script></span>，<span><span class="MathJax_Preview">|S_y| = |\{y_2, y_3, y_4, y_5\}|=4</span><script type="math/tex">|S_y| = |\{y_2, y_3, y_4, y_5\}|=4</script></span>。</p>
+</li>
+</ul>
+<p>我们重复上述过程某个次数，每次产生一个共识集和它的分数。最后，通过从共识中选择有最高分的任意代码解来获得最佳代码解 <span><span class="MathJax_Preview">\hat{x}</span><script type="math/tex">\hat{x}</script></span>。如果我们想要获得 <span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span> 个代码解，我们可以选择 Top <span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span> 个得分最高的集合，并从 <span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span> 个共识集合中的每一个中挑选一个代码解。</p>
+<p>实际中，当 <span><span class="MathJax_Preview">D</span><script type="math/tex">D</script></span> 中的代码解数不多时，我们可以简化上面的方法通过检查 <span><span class="MathJax_Preview">D</span><script type="math/tex">D</script></span> 中所有可能的对，而不是从 <span><span class="MathJax_Preview">D</span><script type="math/tex">D</script></span> 中采样。特别地，对于每个代码解 <span><span class="MathJax_Preview">x ∈ X</span><script type="math/tex">x ∈ X</script></span>，我们运行 <span><span class="MathJax_Preview">Y</span><script type="math/tex">Y</script></span> 中的每个测试用例，并跟踪它通过了哪些测试用例。将通过相同测试用例的代码解组合在一起，因为它们具有相同的功能。这样将 <span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span> 中的所有代码解分成几组，记作 <span><span class="MathJax_Preview">X = \{S^1_x, S^2_x,···,S^K_x \}</span><script type="math/tex">X = \{S^1_x, S^2_x,···,S^K_x \}</script></span>，其中 <span><span class="MathJax_Preview">K</span><script type="math/tex">K</script></span> 是代码解组的数量。每个组 <span><span class="MathJax_Preview">S_x</span><script type="math/tex">S_x</script></span> 都有一个集合，是它通过的测试用例的数量，我们将其写为 <span><span class="MathJax_Preview">S_y</span><script type="math/tex">S_y</script></span>。然后，我们得到 <span><span class="MathJax_Preview">K</span><script type="math/tex">K</script></span> 个共识集，每个共识集都有形式 <span><span class="MathJax_Preview">S = \{(x, y)|x ∈ S_x, y ∈ S_y\}</span><script type="math/tex">S = \{(x, y)|x ∈ S_x, y ∈ S_y\}</script></span>。我们可以对由 <span><span class="MathJax_Preview">f(S) = |S_x||S_y|</span><script type="math/tex">f(S) = |S_x||S_y|</script></span> 设置的每个共识进行评分，如前。这个朴素的版本捕捉到了相同的下线直觉，但发现所有共识集都是正确的，无需重复采样。</p>
+<h3 id="1863">18.6.3 试验步骤<a class="headerlink" href="#1863" title="Permanent link">⚓︎</a></h3>
+<h4 id="1_1">1. 模型<a class="headerlink" href="#1_1" title="Permanent link">⚓︎</a></h4>
+<p>我们的试验基于 CodeX、INCODER 和 CODEGEN。
+- CodeX 是 GPT-3 的后代，并且能够理解所提供的上下文并生成功能程序。我们用三个 OpenAI 提供的具有不同功能的 CodeX 模型：code-cushman-001、code-davinci-001 和 code-davinci-002。
+- INCODER 是一个统一的生成模型，可以执行从左到右代码生成和代码填充，使用 INCODER 6.7B 版本 (INCODER 6B)。
+- 而 CODEGEN 是一个大型语言模型家族执行会话程序合成，使用 16B 的单语版本 (CODEGEN-MONO-16B)。</p>
+<h4 id="2_1">2. 指标和基线<a class="headerlink" href="#2_1" title="Permanent link">⚓︎</a></h4>
+<p>我们使用 pass@k（有 <span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span> 个样本）进行性能评估和利用真实测试用例来确定代码解的功能正确性。对于每个问题，我们采样 <span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span> 个代码解，然后选择其中的 <span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span> 个进行评估。如果有的话 <span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span> 个代码解中的一个通过了所有地面实况测试用例，则认为问题已解决。然后 pass@k 是已解决问题的百分比。我们使用 pass@k 的无偏定义作为我们的基准，其中 <span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span> 个代码解是从 <span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span> 个样本中随机选取的。CODET 使用双向执行协议机制从 <span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span> 个样本中选择 <span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span> 个代码解。此外，我们还使用包括了 Li 等人的聚类方法作为比较，表示为 AlphaCode-C。我们的复制是使用 CODET 生成的测试输入，在测试输入，按测试输出对代码解进行分组，并按大小对集群进行排序。</p>
+<h4 id="3">3. 基准<a class="headerlink" href="#3" title="Permanent link">⚓︎</a></h4>
+<p>我们对四个公共代码生成基准进行了试验。基准的统计数据如表 17-16 所示。</p>
+<p>表 17-16 统计基准</p>
+<p><img src="img/17-6-1Table.png" height=180/></p>
+<p>(1) HumanEval 由手写的 Python 编程问题组成。原始上下文包括示例输入输出案例，这些案例在我们的试验中被删除以避免暴露真实的测试案例。附录 B 中的试验表明，这种去除操作是合理且必不可少的。
+(2) MBPP 包含众包 Python 编程问题，我们遵循 HumanEval 为其构建上下文。
+(3) APPS 包括从开放访问编码网站收集的编码问题，这些网站有不同的难度级别。
+(4) CodeContests 包括从 Codeforces 平台上抓取的竞争性编程问题。</p>
+<p>为了启用零样本推理，我们为 APPS 和 CodeContests 构建上下文如下：原始问题描述为被视为删除输入输出示例的注释，以及一个简单的函数头“def solution(stdin : str) → str :” 放置在注释之后以容纳输入/输出数据格式。</p>
+<h3 id="1864">18.6.4 试验结果<a class="headerlink" href="#1864" title="Permanent link">⚓︎</a></h3>
+<p>在本节中，我们在五个不同的预训练模型和四个基准上评估 CODET 验证其有效性，然后通过测试用例分析和案例研究提供更多的发现。</p>
+<h4 id="1-humaneval-mbpp">1. HumanEval 和 MBPP 的结果<a class="headerlink" href="#1-humaneval-mbpp" title="Permanent link">⚓︎</a></h4>
+<p>各种模型在 HumanEval 和 MBPP 基准上的试验结果总结在表 17-17 中。如果我们比较基准列上的 pass@100 和 pass@1，前者明显优于后者，表明选择最佳代码解的潜力来自 100 个生成的样本。</p>
+<p>表 17-17 HumanEval 和 MBPP 试验结果</p>
+<p><img src="img/17-6-2Table.png"/></p>
+<p>对于三个 CodeX 模型，当我们将 CODET 列与基准列进行比较时，CODET pass@1 比基线 pass@1 实现了大约 10% 的绝对改进。HumanEval 的改进始终超过 10%。令人惊讶的是，即使是最强的基线，code-davinci-002，改进为 18.8%，将 pass@1 提高到 65.8%，这比之前报告的最佳结果绝对改进了 20+%。我们将此归因于对 code-davinci-002 生成的更高质量的测试用例进行了更大的改进，提供了在第 18.6.4-3 节中进行更深入的分析。CODET 在 MBPP 基准测试中也取得了卓越的性能，尽管改进幅度略小于 HumanEval。使用以 code-davinci-002 为例，pass@1 提升了9.6%。我们还报告 pass@2 和通过 CODET 的 pass@10 进一步显示其优越性。CODET 的 pass@2 结果接近基线 pass@10 结果。同时，对 pass@10 的改进也始终高于 HumanEval 基准测试的 10%。</p>
+<p>INCODER-6B 和 CODEGEN-MONO-16B 的试验结果进一步验证了 CODET 的有效性。很明显，CODET 可以显着提高 pass@1，绝对提高范围为 4.2% 到 13.1%。INCODER-6B 实现了最大的改进，比 MBPP 基准上涨 13.1%。与 CodeX 的试验结果相似，pass@2 结果接近基线 pass@10。所有结果都表明 CODET 可以提高各种预训练语言模型的性能一致。</p>
+<p>至于 AlphaCode-C，它在使用不同模型的两个基准测试中始终不如 CODET，证明了我们采用测试用例信息的双向执行协议的优越性考虑在内。</p>
+<h4 id="2-apps-codecontests">2. APPS 和 CodeContests 的结果<a class="headerlink" href="#2-apps-codecontests" title="Permanent link">⚓︎</a></h4>
+<p>我们还在两个更具挑战性的基准测试 APPS 和 CodeContests 上进行了试验。我们构建 APPS 和 CodeContests 的零样本版本，以符合我们对 HumanEval 的设置和 MBPP 通过删除问题描述中的示例输入输出案例。我们使用 code-davinci-002 用于代码解和测试用例生成。APPS 采样数设置为 50 以节省计算成本，一共 5000 个测试问题上。而对于 CodeContests，采样数设置为 1000 以解决特别难的问题。结果总结在表 17-18 中，我们可以清楚地观察到一致的性能改进在使用 CODET 的两个基准测试中。APPS 中的问题的 pass@1 改进为 7.4%，而对于竞争基本问题，APPS 和 CodeContest 改进并不大。此外，我们注意到代码-davinci-002由于这两个基准的难度更高。</p>
+<p>表 17-18 APPS 和 CodeContests 的试验结果</p>
+<p><img src="img/17-6-3Table.png"/></p>
+<h4 id="3_1">3. 测试用例分析<a class="headerlink" href="#3_1" title="Permanent link">⚓︎</a></h4>
+<p>测试用例对 CODET 至关重要，因为其核心思想是基于测试驱动的执行协议。因此，在本小节中，我们通过回答以下研究问题来分析测试用例。</p>
+<p><strong>（1）Q1：生成的测试用例的质量如何？</strong></p>
+<p>我们使用规范代码解评估生成的测试用例的正确性。一个测试用例是如果规范代码解可以通过它，则认为是正确的。图 17-9a 总结了分布 HumanEval 上的测试用例准确度，其中横轴表示每个的准确度值问题，纵轴表示对应问题的概率密度精度值。我们可以看到 CodeX 模型生成的测试用例要高得多，准确率高于 CODEGEN/INCODER。除了准确率，我们还引入了测试用例毒性率作为质量的衡量标准。如果任何生成的代码解都可以，我们认为测试用例是“有毒的”通过它而规范的代码解不能。有毒的测试用例可能会阻碍共识的评分设置并导致 CODET 失败。如图 17-9b 所示，我们可以发现毒性率与不同模型的测试用例准确性高度相关，其中比例 CodeX 模型的毒性测试用例数量小于CODEGEN/INCODER。我们还评估了使用附录 H.2 中的两个覆盖标准生成的测试用例的代码覆盖，其中 CodeX 模型仍然优于 CODEGEN/INCODER，平均覆盖率超过 95%。比较表 17-7 所示的测试用例质量和 CODET 的性能，我们可以发现质量测试用例的数量与使用关于不同模型的 CODET 的性能增益密切相关。</p>
+<p><img src="img/17-6-4a.SVG" height=220/>
+<img src="img/17-6-4b.SVG" height=220/></p>
+<p>图 17-9 测试用例准确率与毒性率</p>
+<p><strong>（2）Q2：更好的测试用例能否进一步提升平庸模型的性能？</strong></p>
+<p>从上面与图 17-9 的讨论，可以发现 code-davinci-002 是最有能力的生成高质量测试用例的模型。因此，我们进行了一项试验，通过使用 code-davinci-002 生成的测试用例，以提高其他四种模型（code-cushman-001、ode-davinci-001、INCODER 和 CODEGEN）的性能。表 17-19 总结了性能改进是基于 HumanEval 和 MBPP 基准的不同模型。一般来说，使用测试 code-davinci-002 生成的案例可以显着提高使用测试的性能由能力较差的模型本身生成的案例。对于 code-cushman-001 和 code-davinci-001，pass@1 的绝对改进在 1.8% 到 4.3% 之间，而对于 INCODER 和 CODEGEN，范围从 6.2% 到 15.9%。以上结果表明正确的代码通过采用更好的测试用例，可以进一步利用平庸模型生成的代码解。</p>
+<p>表 17-19 使用 code-davinci-002 生成的测试用例的代码解性能</p>
+<p><img src="img/17-6-4Table.png"/></p>
+<p><strong>（3）Q3：当测试用例较少时，CODET 的效果如何？</strong></p>
+<p>在为 HumanEval 基准生成测试用例时，我们对每个问题抽样 100 次，每个样本可能包括多个断言语句（即测试用例），记为Sampling Number = 100。然后我们提取第一个来自每个样本的 5 个句法正确的测试用例，表示为as Limit = 5. 这意味着每个问题都配备了最多 500 个测试用例。提取测试的实际数量案例总结在附录 H.1 中。我们通过减少采样数和限制来对测试用例的数量进行消融研究。如表 17-20 所示，我们可以得出结论，在 CODET 中使用更多的测试用例通常可以导致更好的性能，而当 Sampling Number ≥ 50 且 Limit ≥ 3 时，性能差距缩小。此外，CODET 将 pass@1 提高了 9.5%，仅 10测试用例使用 code-davinci-002，建议高考案例效率。我们可以在中使用较小的采样数实际应用程序以平衡性能和计算成本。</p>
+<p>表 17-20 较少的测试用例时的 CODET 方法的性能</p>
+<p><img src="img/17-6-5Table.png" height=180/></p>
+<h4 id="4">4. 案例研究<a class="headerlink" href="#4" title="Permanent link">⚓︎</a></h4>
+<p>在 CODET 中，我们基于好的代码解可以通过最多的测试用例并同意最多的相同功能的代码解。我们使用“双”因为代码解和测试用例都很关键。图 17-10a 显示了一个案例使用 code-cushman-001 的 HumanEval 基准测试。得分最高的共识集具有正确的如果列表中的所有数字都低于阈值 t，则返回 true 的功能，而共识集排在第 2 位的人并没有完全理解边界条件。第二次共识中的代码解共识集可以通过比第一个共识集（即 218）更多的测试用例（即 226）。然而，考虑到代码解和测试用例，CODET 可以成功地对共识集进行排名，并且找到正确的代码解。这种情况并不少见，说明我们设计的双向执行协议的合理性。为了进一步的统计证明，我们进行了一项消融研究来评分通过仅考虑代码解或测试用例的数量来达成共识。</p>
+<p><img src="img/17-6-5a.SVG" height=240/></p>
+<p><img src="img/17-6-5b.SVG" height=240/></p>
+<p>图 17-10 案例</p>
+<p>CODET 由预训练的语言模型赋能，但也受到它们的限制。所以，第 2.2 节中的第二个假设并不总是成立，导致错误情况8个生成了正确的代码解，但不在前 1 个共识集中。对于在 HumanEval 基准测试中代码为 cushman-001 的 CODET，我们发现 164 个编程问题中有 53 个是属于这种情况。我们手动调查了这些问题，发现其中 20% 可以被归咎于诸如问题描述不明确、角落案例未被发现和缺乏导入语句，而其余问题归因于模型的失败理解问题描述。图 5b 显示了由歧义引起的错误情况。这正确理解描述“sum(first index value, last index value)”是把第一个加起来和最后一个值，而将所有值从第一个到最后一个求和的代码解排名第一。</p>
+<p><em>由于篇幅有限，对原文有所删减，参考文章链接没有列出，有兴趣的读者可以阅读原文。</em></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" title="Back to top" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+          </a>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright © Microsoft Corporation. All rights reserved.
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "header.autohide"], "search": "../../../../assets/javascripts/workers/search.b0710199.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.76f349be.min.js"></script>
+      
+        <script src="../../../../javascripts/config.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-chtml.min.js"></script>
+      
+    
+  </body>
+</html>
